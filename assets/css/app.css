@@ -1,2 +1,11 @@
 @import "~vuetify/dist/vuetify.min.css";
 @import "~@mdi/font/css/materialdesignicons.css";
+
+.v-card__text {
+    padding: 0px !important;
+}
+div #app {
+    background: url('http://www.meteo-paris.com/site/images/photos/2/2019/crepuscule-rose-aerosols-volcaniques.jpg') !important;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

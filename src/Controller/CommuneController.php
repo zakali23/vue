@@ -38,10 +38,33 @@ class CommuneController extends AbstractController
      * @param SerializerInterface $serializer
      * @return Response
      */
-    public function search(string $search,CommuneRepository $repository,SerializerInterface $serializer)
+    public function searchCp(string $search,CommuneRepository $repository,SerializerInterface $serializer)
     {
         $commune = $repository->findByCodePostal($search);
         $data =  $serializer->serialize($commune,'json');
+        $response=new Response($data);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+
+
+
+    }
+
+    /**
+     * @Route("/commune/search/{search}", name="commune_search",methods={"GET"},options={ "expose" = true})
+     * @param string $search
+     * @param CommuneRepository $repository
+     * @param SerializerInterface $serializer
+     * @return Response
+     */
+    public function search(string $search,CommuneRepository $repository,SerializerInterface $serializer)
+    {
+        $communes = $repository->findBySearch($search);
+        $reslt=[];
+        foreach ($communes as $commune){
+            $reslt[] = implode("", $commune);
+        }
+        $data =  $serializer->serialize($reslt,'json');
         $response=new Response($data);
         $response->headers->set('Content-Type', 'application/json');
         return $response;
@@ -57,10 +80,9 @@ class CommuneController extends AbstractController
      * @return Response
      */
     public function add(Request $request,ObjectManager $manager){
-        set_time_limit(0);
+        //set_time_limit(0);
         $data = $request->getContent();
-        $decoders = json_decode($data);
-        foreach ($decoders as $decoder){
+        $decoder = json_decode($data);
             $commune = new Commune();
             $commune->setCommune($decoder->commune);
             $commune->setInsee($decoder->insee);
@@ -71,7 +93,7 @@ class CommuneController extends AbstractController
             //dump($commune);die;
             $manager->persist($commune);
             $manager->flush();
-        }
+
 
         return new Response('valider',Response::HTTP_CREATED);
 

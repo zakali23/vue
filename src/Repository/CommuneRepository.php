@@ -35,6 +35,25 @@ class CommuneRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @param $cp
+     * @return Commune[] Returns an array of Commune objects
+     */
+
+    public function findBySearch($search)
+    {
+        $fields = ['c.acheminement'];
+        return $this->createQueryBuilder('c')
+            ->select($fields)
+            ->andWhere('c.codePostal LIKE :search')
+            ->orWhere('c.commune LIKE :search')
+            ->setParameter('search',$search.'%')
+            ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Commune
