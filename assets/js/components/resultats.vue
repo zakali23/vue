@@ -48,13 +48,16 @@
         <v-divider></v-divider>
 
         <v-card-actions>
-            <v-btn text>Full Report</v-btn>
+            <v-btn text @click="effacer">Effacer</v-btn>
         </v-card-actions>
     </v-card>
 </template>
 <script>
+    import store from '../stores/store'
     import maps from './maps.vue'
+
     export default {
+        store,
         components:{
             maps
         },
@@ -82,5 +85,10 @@
                 ],
             }
         },
+        methods:{
+            effacer(){
+                store.commit('setShow',false)
+            }
+        }
     }
 </script>

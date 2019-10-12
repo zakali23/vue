@@ -52,7 +52,9 @@
 <script>
 
     import resultats from './resultats.vue'
+    import store from '../stores/store'
     export default {
+        store,
         components:{
             resultats
         },
@@ -70,7 +72,7 @@
             villes:[],
             loading:false,
             search:null,
-            show:false,
+
 
            }
        },
@@ -116,9 +118,14 @@
                 }).catch(function (error) {
                     console.log(error.response);
                 }).finally(function () {
-                    self.show = true;
+                    store.commit('setShow',true)
                 });
 
+            }
+        },
+        computed:{
+            show(){
+                return store.getters.getShow;
             }
         }
 
