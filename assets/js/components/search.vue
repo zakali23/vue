@@ -43,7 +43,7 @@
                 <v-divider></v-divider>
 
                 <v-card-text style="height: auto;" v-if="show">
-                <resultats :ville="commune.name" :temperature="commune.temp" :description="commune.desc" :icon="commune.icon" :vent="commune.vent" :humidity="commune.humidity"/>
+                <resultats :ville="commune.name" :temperature="commune.temp" :description="commune.desc" :icon="commune.icon" :vent="commune.vent" :humidity="commune.humidity" :coord="commune.coord"/>
                 </v-card-text>
             </v-card>
         </v-card>
@@ -64,7 +64,8 @@
                 vent:null,
                 desc:null,
                 humidity:null,
-                icon:null
+                icon:null,
+                coord:[]
             },
             villes:[],
             loading:false,
@@ -109,8 +110,9 @@
                     self.commune.icon = response.data.weather[0].icon
                     self.commune.temp = Math.round(response.data.main.temp)
                     self.commune.humidity = Math.round(response.data.main.humidity)
-                    self.commune.vent = response.data.wind.speed
-                    console.log(self.commune.desc)
+                    self.commune.vent = response.data.wind.speed,
+                    self.commune.coord = [response.data.coord.lat,response.data.coord.lon]
+                    console.log(self.commune.coord)
                 }).catch(function (error) {
                     console.log(error.response);
                 }).finally(function () {
