@@ -1,13 +1,53 @@
 @import "~vuetify/dist/vuetify.min.css";
 @import "~@mdi/font/css/materialdesignicons.css";
-
-
-
-.v-card__text {
-    padding: 0px !important;
-}
-div #app {
-    background: url('http://www.meteo-paris.com/site/images/photos/2/2019/crepuscule-rose-aerosols-volcaniques.jpg') !important;
-    background-repeat: no-repeat;
+html {
+    height: 100%;
+    margin: 0;
+    /* The image used */
+    background: url("https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832_960_720.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
     background-size: cover;
+
+}
+.theme--light.v-application {
+    background: transparent !important;
+    color: rgba(0,0,0,.87);
+}
+.theme--light.v-card {
+    background-color: transparent !important;
+    color: rgba(0,0,0,.87);
+}
+header.v-sheet.v-sheet--tile.theme--light.v-toolbar.v-toolbar--flat {
+    background: transparent !important;
+}
+label.v-label.theme--light {
+    color: wheat !important;
+}
+div#list-14 {
+    background: rgba(0,0,0,.38);
+}
+.v-list-item .v-list-item__subtitle, .v-list-item .v-list-item__title {
+    line-height: 1.2;
+    color: beige;
+}
+i.v-icon.notranslate.mdi.mdi-menu-down.theme--light {
+    color: wheat;
+}
+i.v-icon.notranslate.mdi.mdi-menu-down.theme--light.white--text {
+    color: wheat;
+}
+.v-card__text {
+    background: rgba(0,0,0,.12);
+}
+.v-list-item__subtitle {
+    color:#eee !important;
+}
+.colory{
+    color:wheat !important;
+}
+.infos-text{
+    color: white;
+    font-size: large;
 }
