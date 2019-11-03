@@ -5,9 +5,9 @@
                     color="transparent"
                     extended
                     flat
-
             >
                 <v-app-bar-nav-icon></v-app-bar-nav-icon>
+                <v-toolbar-title class="text--white">App Meteo wcs</v-toolbar-title>
             </v-toolbar>
 
             <v-card
@@ -17,7 +17,9 @@
             >
                 <v-toolbar flat>
                     <v-toolbar-title class="grey--text"></v-toolbar-title>
-
+                    <v-btn icon>
+                        <v-icon @click.prevent="localisation" color="#F5DEB3">mdi-map-marker</v-icon>
+                    </v-btn>
                     <v-autocomplete
                             class="mx-4"
                             v-model="commune.name"
@@ -132,7 +134,7 @@
                         url: url
                     })
                         .then(function (response) {
-                             console.log(response.data.weather[0].icon)
+                             console.log(response)
                             self.commune.name = response.data.name
                             self.commune.desc = response.data.weather[0].description
                             self.commune.temp = Math.round(response.data.main.temp)
@@ -141,7 +143,7 @@
                             self.commune.coord = [response.data.coord.lat,response.data.coord.lon]
                             self.commune.min = response.data.main.temp_min;
                             self.commune.max = response.data.main.temp_max;
-                            if(response.data.weather[0].icon ==="01n"){
+                            if(['01d','01n'].includes(response.data.weather[0].icon) === true){
                                 self.commune.icon ="https://cdn2.iconfinder.com/data/icons/crystalproject/crystal_project_256x256/apps/kweather.png"
                             }
                             else{
@@ -156,9 +158,51 @@
 
                     });
 
+            },
+             localisation () {
+                let lat='';
+                let lon='';
+                if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(showPosition);
+                    } else {
+                        console.log('pas de geolocalisation')
+                    }
+                 let self = this
+                 async function showPosition(position) {
+                        lat = position.coords.latitude;
+                        lon=  position.coords.longitude;
+                     self.commune.coord = [lat,lon];
+                     const url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&lang=fr&units=metric&appid=aeaa755359f4760cc69052fa33cbb13c`;
+                     console.log(url)
+                     await self.axios({
+                         method: 'get',
+                         url: url
+                     })
+                         .then(function (response) {
+                             // console.log(response.data)
+                             self.commune.name = response.data.name
+                             self.commune.desc = response.data.weather[0].description
+                             self.commune.temp = Math.round(response.data.main.temp)
+                             self.commune.humidity = Math.round(response.data.main.humidity)
+                             self.commune.vent = response.data.wind.speed,
+                             //self.commune.coord = [response.data.coord.lat,response.data.coord.lon]
+                             self.commune.min = response.data.main.temp_min;
+                             self.commune.max = response.data.main.temp_max;
+                             if(['01d','01n'].includes(response.data.weather[0].icon) === true){
+                                 self.commune.icon ="https://cdn2.iconfinder.com/data/icons/crystalproject/crystal_project_256x256/apps/kweather.png"
+                             }
+                             else{
+                                 self.commune.icon = 'http://openweathermap.org/img/wn/'+response.data.weather[0].icon+'@2x.png'
+                             }
+                             store.commit('setShow',true)
+                         }).catch(function (error) {
+                             //console.log(error.response.data);
+                             store.commit('setShow',false)
+                             self.snackbar = true
+                         }).finally(function () {
 
-
-
+                         });
+                    }
 
             }
         },
